@@ -6,7 +6,7 @@
 
 -Eduardo Prina Valcarce
 ## Proyecto: Primer Parcial SPD
-![Tinkercad](https://github.com/EduardoValcarce/TrabajoPrimerParcialSPD/blob/d39536721e12318881acbd456d136c2e617be176/Imagenes/ContadorArduino.PNG)
+![Tinkercad](https://github.com/EduardoValcarce/TrabajoPrimerParcialSPD/blob/19f5b60005a732311d3d2505ae2bd3239108108d/Imagenes/ProyectoSPD.PNG)
 ## Descripcion
 El proyecto consiste de dos displays de siete segmentos conectados a una placa arduino los cuales cumplen con la funcion de mostrar los numeros del 00 al 99 gracias a dos botones que aumentan o disminuyen su valor. Ademas, cuenta con un boton deslizante (switch) que hace que cambie de funcion. Puede aumentar o disminuir el numero mostrado en uno o puede hacer que muestre solamente los numeros primos. El proyecto cuenta ademas con un sensor de temperatura el cual enciende o apaga tres leds dependiendo de la temperatura seleccionada.
 ## Funcion Principal
