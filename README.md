@@ -38,5 +38,5 @@ void loop()
   //paso el valor de countDigit a printCount
 }
 ~~~
-## Link al pryecto
+## Link al proyecto
 - [Proyecto](https://www.tinkercad.com/things/iAHjCldsvFA)
