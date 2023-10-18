@@ -8,7 +8,7 @@
 ## Proyecto: Primer Parcial SPD
 ![Tinkercad](https://github.com/EduardoValcarce/TrabajoPrimerParcialSPD/blob/d39536721e12318881acbd456d136c2e617be176/Imagenes/ContadorArduino.PNG)
 ## Descripcion
-El proyecto consiste de dos displays de siete segmentos conectados a una placa arduino los cuales cumplen con la funcion de mostrar los numeros del 0 al 99 gracias a dos botones que aumentan o disminuyen su valor. Ademas, cuenta con un boton de reset para volver a empezar desde el 0.
+El proyecto consiste de dos displays de siete segmentos conectados a una placa arduino los cuales cumplen con la funcion de mostrar los numeros del 00 al 99 gracias a dos botones que aumentan o disminuyen su valor. Ademas, cuenta con un boton deslizante (switch) que hace que cambie de funcion. Puede aumentar o disminuir el numero mostrado en uno o puede hacer que muestre solamente los numeros primos. El proyecto cuenta ademas con un sensor de temperatura el cual enciende o apaga tres leds dependiendo de la temperatura seleccionada.
 ## Funcion Principal
 En esta funcion analizamos que boton presiona el usuario y el codigo actua en consecuencia. Tiene la opcion de apretar tres botones y cada uno realizara distintas funciones dentro del codigo siempre afectando al contador CountDigit. Puede aumentar, disminuir o devolver a 0 al contador.
 ~~~ C (lenguaje en el que esta escrito)
@@ -40,4 +40,4 @@ void loop()
 }
 ~~~
 ## Link al proyecto
-- [Proyecto](https://www.tinkercad.com/things/iAHjCldsvFA)
+- [Proyecto](https://www.tinkercad.com/things/a064HU8mD1E)
