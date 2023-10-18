@@ -39,4 +39,4 @@ void loop()
 }
 ~~~
 ## Link al pryecto
-- [proyecto](https://www.tinkercad.com/things/iAHjCldsvFA)
+- [Proyecto](https://www.tinkercad.com/things/iAHjCldsvFA)
