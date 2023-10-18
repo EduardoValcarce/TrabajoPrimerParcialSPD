@@ -1,1 +1,302 @@
+#define A 12
+#define B 13
+#define F 11
+#define G 10
+#define E 9
+#define D 8
+#define C 7
+#define SUBE 4
+#define BAJA 3
+#define UNIDAD A4
+#define DECENA A5
+#define APAGADOS 0
+#define TIMEDISPLAYON 10
+#define INTERRUPTOR 5
 
+#define led_uno A1
+#define led_dos A2
+#define led_tres A3
+
+//Inicializo todas las variables
+int countDigit = 0;
+int sube = 1;
+int estadoSube = 1;
+int baja = 1;
+int estadoBaja = 1;
+int interruptor = 0;
+int temperaturaRead = 0;
+float temperatura = 0;
+
+void setup()
+{
+  pinMode(3, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(UNIDAD, OUTPUT);
+  pinMode(DECENA, OUTPUT);
+  pinMode(led_uno, OUTPUT);
+  pinMode(led_dos, OUTPUT);
+  pinMode(led_tres, OUTPUT);
+}
+
+void loop()
+{
+  int pressed = keypressed();//SUBE-BAJA-0
+  if(pressed==SUBE)
+  {
+    countDigit++;
+    if(countDigit>99)//si pasa 99 lo ponemos en 0
+      countDigit=0;
+  }
+  else if(pressed==BAJA)
+  {
+    countDigit--;
+    if(countDigit<0)//si pasa 0 lo ponemos en 99
+      countDigit=99;
+  }
+  interruptor = digitalRead(INTERRUPTOR);
+  if(interruptor==1)
+  //Si el interruptor esta en 1 tenemos que mostrar solo los primos
+  {
+  	countDigit = esPrimo(countDigit,pressed);
+    //Pasamos el contador actual y el boton que se apreto y nos devuelve el nuevo valor a mostrar
+  }
+  printCount(countDigit);//Le pasamos el valor del contador a printCount para que indique que mostrar
+
+  sensorTemperatura();
+}
+
+void printDigit(int digit)
+{
+  digitalWrite(A, LOW);
+  digitalWrite(B, LOW);
+  digitalWrite(C, LOW);
+  digitalWrite(D, LOW);
+  digitalWrite(E, LOW);
+  digitalWrite(F, LOW);
+  digitalWrite(G, LOW);
+  //Arranca con todo apagado y prende segun el numero que le pasemos
+  switch(digit)
+  {
+    case 0:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 1:
+    {
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 2:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      break;
+    }
+    case 3:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 4:
+    {
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 5:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 6:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 7:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 8:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 9:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+  }
+}
+
+void prendeDigito(int digito)
+{
+  //Prende los displays de forma intermitente
+  if(digito==DECENA)
+  {
+    digitalWrite(UNIDAD, LOW);
+    digitalWrite(DECENA, HIGH);
+    delay(TIMEDISPLAYON);
+    //El poco tiempo de delay nos permite prende y apaga los displays
+    //de forma intercalada haciendo el efecto de que ambos estan prendidos
+  }
+  else if(digito==UNIDAD)
+  {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, LOW);
+    delay(TIMEDISPLAYON);
+  }
+  else
+  {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, HIGH);
+  }
+}
+
+void printCount(int count)
+{
+  prendeDigito(APAGADOS);
+  printDigit(count/10); //Hace la cuenta de la decena
+  prendeDigito(UNIDAD);
+  prendeDigito(APAGADOS);
+  printDigit(count - 10*((int)count/10));//Hace la cuenta de la unidad
+  prendeDigito(DECENA);
+  //Pasa a printDigit los valores que debe mostrar
+  //y a prendeDigito el display que debe prender
+}
+
+int keypressed(void)
+{
+  sube = digitalRead(SUBE);
+  baja = digitalRead(BAJA);
+  if(sube)
+    estadoSube = 1;
+  if(baja)
+    estadoBaja = 1;
+  	
+  	if(sube==0 && sube != estadoSube)
+    {
+      estadoSube = sube;
+      return SUBE;
+    }
+  	if(baja==0 && baja != estadoBaja)
+    {
+      estadoBaja = baja;
+      return BAJA;
+    }
+  return 0;
+} 
+
+int esPrimo(int digit, int accion)
+{
+  bool primo = false;
+  while(primo == false)//Hacemos un while hasta esncontrar un numero primo
+  {
+    primo = true;
+    if(digit == 1 || digit == 0)//Si es igual a 1 o 0 no es primo
+    {
+      primo = false;
+    }else
+    {
+      for(int i=2;i<digit;i++)
+      {
+        if(digit % i == 0)// si se cumple no es primo, cambiamos la variable
+          primo = false;
+      }
+    }
+    //En caso de no ser primo debemos ver si el primo que estamos
+    //buscando esta hacia abajo o hacia arriba de la posicion actual
+    //para eso usamos el parametro accion (boton que se toco)
+    if(primo == false && accion == SUBE)
+    {
+      digit++;
+      if(digit>99)
+      	digit=2;
+    }else if(primo == false && accion == BAJA)
+    {
+      digit--;
+      if(digit<0)
+      	digit=97;
+    }else //En caso de que encontremos un primo, retornamos el numero
+    {
+      return digit;
+    }
+  }
+}
+
+void sensorTemperatura()
+{
+  temperaturaRead = analogRead(A0);
+  temperatura = map(temperaturaRead,20,350,-40,125);
+  if (temperatura > 0 && temperatura < 41)
+  {
+    digitalWrite(led_uno, HIGH);
+    digitalWrite(led_dos, LOW);
+    digitalWrite(led_tres, LOW);
+  }
+  else if (temperatura >= 41 && temperatura < 83)
+  {
+    digitalWrite(led_uno, HIGH);
+    digitalWrite(led_dos, HIGH);
+    digitalWrite(led_tres, LOW);
+  }
+  else if (temperatura >= 83)
+  {
+    digitalWrite(led_uno, HIGH);
+    digitalWrite(led_dos, HIGH);
+    digitalWrite(led_tres, HIGH);
+  }
+  else
+  {
+    digitalWrite(led_uno, LOW);
+    digitalWrite(led_dos, LOW);
+    digitalWrite(led_tres, LOW);
+  }
+}
