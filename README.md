@@ -1,4 +1,4 @@
-# TrabajoPrimerParcialSPDaa
+# TrabajoPrimerParcialSPD
 ## Integrantes
 -Lautaro Muller
 
