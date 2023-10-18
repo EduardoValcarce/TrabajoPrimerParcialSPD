@@ -1,7 +1,9 @@
 # TrabajoPrimerParcialSPDaa
 ## Integrantes
 -Lautaro Muller
+
 -Julián Nario
+
 -Eduardo Prina Valcarce
 ## Proyecto: Primer Parcial SPD
 ## Descripcion
