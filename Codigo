@@ -1,0 +1,242 @@
+#define A 12
+#define B 13
+#define F 11
+#define G 10
+#define E 9
+#define D 8
+#define C 7
+#define SUBE 4
+#define BAJA 3
+#define RESET 5
+#define UNIDAD A4
+#define DECENA A5
+#define APAGADOS 0
+#define TIMEDISPLAYON 10
+
+int countDigit = 0;
+int sube = 1;
+int estadoSube = 1;
+int baja = 1;
+int estadoBaja = 1;
+int reset = 1;
+int estadoReset = 1;
+
+void setup()
+{
+  pinMode(3, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(UNIDAD, OUTPUT);
+  pinMode(DECENA, OUTPUT);
+  //digitalWrite(UNIDAD,0);
+  //digitalWrite(DECENA, 0);
+  printDigit(0);
+  //Serial.begin(9600);
+}
+
+void loop()
+{
+  int pressed = keypressed();//SUBE,BAJA,RESET,CERO
+  if(pressed==SUBE)
+    // si es igual a SUBE aumenta el contador
+  {
+    countDigit++;
+    if(countDigit>99)
+      //si el marcador llego a 99 lo devuelve a 0
+      countDigit=0;
+  }
+  else if(pressed==BAJA)
+  {
+    countDigit--;
+    if(countDigit<0)
+      countDigit=99;
+  }
+  else if(pressed==RESET)
+    //Si es igual a RESET devuelve el contador a 0
+  {
+    countDigit=0;
+  }
+  
+  printCount(countDigit);
+  //paso el valor de countDigit a printCount
+}
+
+void printDigit(int digit)
+{
+  digitalWrite(A, LOW);
+  digitalWrite(B, LOW);
+  digitalWrite(C, LOW);
+  digitalWrite(D, LOW);
+  digitalWrite(E, LOW);
+  digitalWrite(F, LOW);
+  digitalWrite(G, LOW);
+  switch(digit)
+    //Prende las luces segun el numero recibido desde
+    //la funcion printCount()
+  {
+    case 0:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 1:
+    {
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 2:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      break;
+    }
+    case 3:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 4:
+    {
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 5:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 6:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 7:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 8:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(E, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+    case 9:
+    {
+      digitalWrite(A, HIGH);
+      digitalWrite(B, HIGH);
+      digitalWrite(F, HIGH);
+      digitalWrite(G, HIGH);
+      digitalWrite(D, HIGH);
+      digitalWrite(C, HIGH);
+      break;
+    }
+  }
+}
+
+void prendeDigito(int digito)
+{
+  if(digito==DECENA)
+  {
+    digitalWrite(UNIDAD, LOW);
+    digitalWrite(DECENA, HIGH);
+    delay(TIMEDISPLAYON);
+  }
+  else if(digito==UNIDAD)
+  {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, LOW);
+    delay(TIMEDISPLAYON);
+  }
+  else
+  {
+    digitalWrite(UNIDAD, HIGH);
+    digitalWrite(DECENA, HIGH);
+  }
+}
+
+void printCount(int count)
+  //recibe como valor el contador (countDigit)
+{
+  prendeDigito(APAGADOS);
+  printDigit(count/10); //calcula la decena
+  prendeDigito(UNIDAD);
+  prendeDigito(APAGADOS);
+  printDigit(count - 10*((int)count/10));//calcula la unidad
+  prendeDigito(DECENA);
+}
+
+int keypressed(void)
+{
+  sube = digitalRead(SUBE);//Vemos si sube esta presionado
+  baja = digitalRead(BAJA);
+  reset = digitalRead(RESET);
+  //Serial.println(sube);
+  if(sube)
+    //Si presione el boton cambio el estado
+    estadoSube = 1;
+  if(baja)
+    estadoBaja = 1;
+  if(reset)
+    estadoReset = 1;
+  	
+  	if(sube==0 && sube != estadoSube)
+      //si sube es 0(presionado) y distinto al estado anterior
+      //devuelvo SUBE y cambio el estado
+    {
+      estadoSube = sube;
+      return SUBE;
+    }
+  	if(baja==0 && baja != estadoBaja)
+    {
+      estadoBaja = baja;
+      return BAJA;
+    }
+  	if(reset==0 && reset != estadoReset)
+    {
+      estadoReset = reset;
+      return RESET;
+    }
+  return 0;
+  //si no presione una tecla o preione una que ya estaba
+  //presionada retorno 0
+} 
