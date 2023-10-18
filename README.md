@@ -6,6 +6,7 @@
 
 -Eduardo Prina Valcarce
 ## Proyecto: Primer Parcial SPD
+![Tinkercad](.Imagenes/ContadorArduino.PNG)
 ## Descripcion
 El proyecto consiste de dos displays de siete segmentos conectados a una placa arduino los cuales cumplen con la funcion de mostrar los numeros del 0 al 99 gracias a dos botones que aumentan o disminuyen su valor. Ademas, cuenta con un boton de reset para volver a empezar desde el 0.
 ## Funcion Principal
