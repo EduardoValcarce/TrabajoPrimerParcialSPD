@@ -8,35 +8,35 @@
 ## Proyecto: Primer Parcial SPD
 ![Tinkercad](https://github.com/EduardoValcarce/TrabajoPrimerParcialSPD/blob/19f5b60005a732311d3d2505ae2bd3239108108d/Imagenes/ProyectoSPD.PNG)
 ## Descripcion
-El proyecto consiste de dos displays de siete segmentos conectados a una placa arduino los cuales cumplen con la funcion de mostrar los numeros del 00 al 99 gracias a dos botones que aumentan o disminuyen su valor. Ademas, cuenta con un boton deslizante (switch) que hace que cambie de funcion. Puede aumentar o disminuir el numero mostrado en uno o puede hacer que muestre solamente los numeros primos. El proyecto cuenta ademas con un sensor de temperatura el cual enciende o apaga tres leds dependiendo de la temperatura seleccionada.
-## Funcion Principal
-En esta funcion analizamos que boton presiona el usuario y el codigo actua en consecuencia. Tiene la opcion de apretar tres botones y cada uno realizara distintas funciones dentro del codigo siempre afectando al contador CountDigit. Puede aumentar, disminuir o devolver a 0 al contador.
-~~~ C (lenguaje en el que esta escrito)
+El proyecto consiste de dos displays de siete segmentos conectados a una placa arduino los cuales cumplen con la funcion de mostrar los numeros del 00 al 99 gracias a dos botones que aumentan o disminuyen su valor. Ademas, cuenta con un boton deslizante (switch) que hace que cambie de funcion, ya sea aumentar o disminuir el numero mostrado en uno o puede hacer que muestre solamente los numeros primos. El proyecto cuenta ademas con un sensor de temperatura el cual enciende o apaga tres leds dependiendo de la temperatura seleccionada.
+## Funciones Principales
+Esta funcion es el loop principal del codigo. En ella analizamos los datos que nos provee el usuario y el codigo actua en consecuencia. Nos indica cuando el usuario aprieta alguno de los botones para aumentar o disminuir el numero mostrado en los displays y guardamos el dato en un contador. Ademas, nos indica si el switch de los numeros primos esta activado o no y tambien hace uso de la funcion del sensor de temperatura.
+~~~ C
 void loop()
 {
-  int pressed = keypressed();//SUBE,BAJA,RESET,CERO
+  int pressed = keypressed();//SUBE-BAJA-0
   if(pressed==SUBE)
-    // si es igual a SUBE aumenta el contador
   {
     countDigit++;
-    if(countDigit>99)
-      //si el marcador llego a 99 lo devuelve a 0
+    if(countDigit>99)//si pasa 99 lo ponemos en 0
       countDigit=0;
   }
   else if(pressed==BAJA)
   {
     countDigit--;
-    if(countDigit<0)
+    if(countDigit<0)//si pasa 0 lo ponemos en 99
       countDigit=99;
   }
-  else if(pressed==RESET)
-    //Si es igual a RESET devuelve el contador a 0
+  interruptor = digitalRead(INTERRUPTOR);
+  if(interruptor==1)
+  //Si el interruptor esta en 1 tenemos que mostrar solo los primos
   {
-    countDigit=0;
+  	countDigit = esPrimo(countDigit,pressed);
+    //Pasamos el contador actual y el boton que se apreto y nos devuelve el nuevo valor a mostrar
   }
-  
-  printCount(countDigit);
-  //paso el valor de countDigit a printCount
+  printCount(countDigit);//Le pasamos el valor del contador a printCount para que indique que mostrar
+
+  sensorTemperatura();
 }
 ~~~
 ## Link al proyecto
